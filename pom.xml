@@ -1,64 +1,43 @@
-
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-     <modelVersion>4.0.0</modelVersion>
-  <groupId>com.example.maven_assesment</groupId>
-  <artifactId>maven_assesment</artifactId>
-  <packaging>jar</packaging>
+    <modelVersion>4.0.0</modelVersion>
 
-
-  <version>1.0-SNAPSHOT</version>
-  <name>maven_assesment</name>
-  <url>http://maven.apache.org</url>
- 
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-        <sonar.host.url>http://localhost:9000</sonar.host.url>
-        <sonar.projectKey>task-2</sonar.projectKey>
-         <sonar.login>sqp_862e683c35e43af414ad60b2903963033c875115</sonar.login>
-        <spring.boot.version>2.7.5</spring.boot.version> 
-    </properties>
+    <groupId>com.example</groupId>
+    <artifactId>swati-maven-asg2</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
     <dependencies>
         <!-- JUnit 5 dependencies -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>5.8.2</version>
+            <version>5.10.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.8.2</version>
+            <version>5.10.0</version>
             <scope>test</scope>
         </dependency>
 
-        <!-- Selenium WebDriver -->
+        <!-- Selenium WebDriver dependencies -->
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>4.1.4</version>
+            <version>4.14.0</version>
         </dependency>
 
-        
         
     </dependencies>
 
     <build>
         <plugins>
-            <!-- Sonar Maven Plugin -->
-            <plugin>
-                <groupId>org.sonarsource.scanner.maven</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-                <version>3.9.1.2184</version>
-            </plugin>
-
-            <!-- JaCoCo Maven Plugin -->
+           
+            <!-- JaCoCo Plugin to generate coverage report -->
+             <!-- JaCoCo Maven Plugin -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -88,7 +67,14 @@
                 </configuration>
             </plugin>
 
-           
+            <!-- Sonar Plugin to send analysis to SonarQube -->
+           <!-- Sonar Maven Plugin -->
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>3.9.1.2184</version>
+            </plugin>
+
         </plugins>
     </build>
 </project>
