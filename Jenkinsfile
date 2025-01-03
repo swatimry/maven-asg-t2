@@ -1,61 +1,81 @@
-pipeline {
-    agent any
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.example.maven_assessment</groupId>
+    <artifactId>Maven_coverage_pipeline3</artifactId>
+    <packaging>jar</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <name>Maven_coverage_pipeline3</name>
+    <url>http://maven.apache.org</url>
 
-    tools {
-        maven 'sonarmaven'
-    }
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <sonar.host.url>http://localhost:9000</sonar.host.url>
+        <sonar.projectKey>mv-t2</sonar.projectKey>
+    </properties>
 
-    environment {
-        SONARQUBE_SERVER = 'sonarqube'
-        SONAR_TOKEN = credentials('sonar-token')  
-    }
+    <dependencies>
+        <!-- JUnit 5 for testing -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.8.2</version>
+            <scope>test</scope>
+        </dependency>
 
-    stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
+        <!-- Selenium WebDriver -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>4.13.0</version>
+        </dependency>
 
-        stage('Build') {
-            steps {
-                bat '''
-                mvn clean install
-                '''
-            }
-        }
+        <!-- WebDriverManager for handling browser drivers -->
+        <dependency>
+            <groupId>io.github.bonigarcia</groupId>
+            <artifactId>webdrivermanager</artifactId>
+            <version>5.4.0</version>
+        </dependency>
+    </dependencies>
 
-        stage('Test') {
-            steps {
-                bat '''
-                mvn test
-                '''
-            }
-        }
+    <build>
+        <plugins>
+            <!-- Surefire Plugin for Running Tests -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <includes>
+                        <include>**/*Test.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
 
-        stage('SonarAnalysis') {
-            environment {
-                SONAR_TOKEN = credentials('sonar-token') // Accessing the SonarQube token stored in Jenkins credentials
-            }
-            steps {
-                bat '''
-                mvn clean verify sonar:sonar \
-               -Dsonar.projectKey=maven-asg2-t2 \
-               -Dsonar.projectName="maven-asg2-t2" \
-               -Dsonar.host.url=http://localhost:9000 \
-               -Dsonar.source=. \
-               -Dsonar.token=%SONAR_TOKEN%
-                '''
-            }
-        }
-    }
+            <!-- JaCoCo Plugin for Coverage -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.10</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
-    post {
-        success {
-            echo "Successfully executed"
-        }
-        failure {
-            echo "Did not work"
-        }
-    }
-}
+            <!-- SonarQube Plugin -->
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>4.8.0.2856</version>
+            </plugin>
+        </plugins>
+    </build>
+</project>
